@@ -11,6 +11,7 @@ import java.net.MulticastSocket;
 import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.Buffer;
 
 public class Cliente extends Thread implements Interfaz{
 	// Atributos
@@ -41,6 +42,10 @@ public class Cliente extends Thread implements Interfaz{
 				this.extraerSala();
 				this.configurarMulticast();
 				this.start();
+				
+				while(this.salir == false) {
+					this.ejecucionEnBucle();
+				}
 			}
 			
 			this.finalizar();
@@ -50,6 +55,8 @@ public class Cliente extends Thread implements Interfaz{
 		}
 	}
 
+	
+	
 	
 	
 	// Metodo para comprobar el nick en el emisor
@@ -98,8 +105,14 @@ public class Cliente extends Thread implements Interfaz{
 
 	@Override
 	public void ejecucionEnBucle() throws Exception {
-
+		System.out.println("Puedes enviar mensajes");
+		String mi_noticia = this.lector.readLine();
+		byte[] datos = mi_noticia.getBytes();
+		DatagramPacket paqueteSalida = new DatagramPacket(datos, datos.length, 
+				this.inetAddress, this.datosSala.puerto);
 		
+		if(mi_noticia.equals(Interfaz.ADIOS)) this.salir = true;
+		if(mc!= null &&mc.isClosed() == false)this.mc.send(paqueteSalida);
 	}
 
 

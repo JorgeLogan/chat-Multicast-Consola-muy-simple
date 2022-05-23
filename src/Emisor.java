@@ -11,6 +11,7 @@ public class Emisor {
 	}
 	
 	private void finalizar() {
+		System.out.println("Se pide cerrar el emisor");
 		if(sala!= null) {
 			try {
 				sala.finalizar();
@@ -28,6 +29,7 @@ public class Emisor {
 				System.out.println("Error al cerrar el hilo de escucha tcp: " + e.getMessage());
 			}
 		}
+		System.out.println("Cerrando emisor");
 	}
 
 	private void crearSalaAgora() {
